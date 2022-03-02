@@ -3,26 +3,35 @@ import '../services/navigation_service.dart';
 import '../locator.dart';
 import '../helper_widgets/appbar_default.dart';
 
-class AppBars {
+class PageAppBars {
 
-  // final _navigationService = locator<NavigationService>();
+  static int tourId = 0;
+
+  set tournamentId(int tournamentId) {
+    tourId = tournamentId;
+  }
 
   static final homePage = AppBarDefault(
-    title: 'Turnir',
+    title: 'Tennis Tournament'
+  );
+
+  static final tournamentDetailsPage = AppBarDefault(
     actions: [
       TextButton(
         onPressed: () {
-          locator<NavigationService>().navigateTo('/draw-page');
+          locator<NavigationService>().navigateTo('/draw-page', []);
         },
         child: const Center(
           child: Text(
-            "Žreb",
+            "Draw",
             style: TextStyle(
-                color: Colors.white
+                color: Colors.white,
+                fontSize: 20
             ),
           ),
         ),
       ),
     ],
+
   );
 }
