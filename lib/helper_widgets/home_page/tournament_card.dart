@@ -1,18 +1,40 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
+import '../../screens/routing_helpers/tournament_details_page/tournament_details_arguments.dart';
+import '../../helper_classes/styles.dart';
+import '../../locator.dart';
+import '../../services/navigation_service.dart';
 
 class TournamentCard extends StatelessWidget {
-  const TournamentCard({Key? key}) : super(key: key);
+  final int tournamentId;
+  final NavigationService _navigationService =  locator<NavigationService>();
+
+
+  TournamentCard({
+    Key? key,
+    required this.tournamentId
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Column(
-        children: const [
-          Text('Turnir 1'),
-          Text('ID: 00001')
-        ],
+    var cardHeight = MediaQuery.of(context).size.height * 0.2;
+    return GestureDetector(
+      onTap: () {
+        _navigationService.navigateTo(
+            '/tournament-details-arguments',
+            TournamentDetailsArguments(tournamentId)
+        );
+      },
+      child: SizedBox(
+        height: cardHeight,
+        child: Card(
+          elevation: 10,
+          child: Center(
+            child: Text(
+              'Tournament ID: $tournamentId',
+              style: Styles.tournamentCardTitle,
+            ),
+          )
+        ),
       ),
     );
   }

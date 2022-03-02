@@ -15,7 +15,12 @@ class Layout extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBar ?? AppBarDefault(),
-      body: body,
+      /** With safe area we assure we won't have problems regarding notches and
+       * rounded corners on certain devices (iPhone X and above for example)
+       * */
+      body: SafeArea(
+        child: body
+      ),
     );
   }
 }
