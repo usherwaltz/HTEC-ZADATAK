@@ -31,7 +31,7 @@ class AppBarDefault extends StatelessWidget with PreferredSizeWidget {
   Widget build(BuildContext context) {
 
     if(tourId != null) {
-      title = "Tourname ID: $tourId";
+      title = "Tournament ID: $tourId";
     }
 
     return AppBar(
