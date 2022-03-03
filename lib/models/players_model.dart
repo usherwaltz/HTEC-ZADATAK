@@ -7,8 +7,7 @@ class Players {
   final String createdAt;
   final String updatedAt;
   final String deletedAt;
-  final bool tournamentId;
-  // final List trainers;
+  final tournamentId;
 
   const Players({
       required this.id,
@@ -19,8 +18,7 @@ class Players {
       required this.createdAt,
       required this.updatedAt,
       required this.deletedAt,
-      required this.tournamentId,
-      // required this.trainers
+      required this.tournamentId
     });
 
   factory Players.fromJson(Map<String, dynamic> json) {
@@ -30,24 +28,24 @@ class Players {
       lastName: json['lastName'] ?? '',
       points: json['points'] ?? 0,
       isProfessional: json['isProfessional'] ?? 0,
-      createdAt: json['createdAt'] ?? '',
-      updatedAt: json['updatedAt'] ?? '',
-      deletedAt: json['deletedAt'] ?? '',
-      tournamentId: json['tournamentId'] ?? false
+      createdAt: json['created_at'] ?? '',
+      updatedAt: json['updated_at'] ?? '',
+      deletedAt: json['deleted_at'] ?? '',
+      tournamentId: json['tournament_id']
     );
   }
 
-  // Map<String, dynamic> toJson() {
-  //   final Map<String, dynamic> data = <String, dynamic>{};
-  //   data['id'] = id;
-  //   data['firstName'] = firstName;
-  //   data['lastName'] = lastName;
-  //   data['points'] = points;
-  //   data['isProfessional'] = isProfessional;
-  //   data['created_at'] = createdAt;
-  //   data['updated_at'] = updatedAt;
-  //   data['deleted_at'] = deletedAt;
-  //   data['tournament_id'] = tournamentId;
-  //   return data;
-  // }
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['firstName'] = firstName;
+    data['lastName'] = lastName;
+    data['points'] = points;
+    data['isProfessional'] = isProfessional;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    data['deleted_at'] = deletedAt;
+    data['tournament_id'] = tournamentId;
+    return data;
+  }
 }

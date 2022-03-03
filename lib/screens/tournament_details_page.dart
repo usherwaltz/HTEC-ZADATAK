@@ -110,7 +110,7 @@ class _TournamentDetailsPageState extends State<TournamentDetailsPage> {
                                  "Professional: Yes" :
                                  "Professional: No"
                            ),
-                           if(player.tournamentId)
+                           if(player.tournamentId != null)
                              Text("Tournament ID: ${player.tournamentId}")
                          ],
                        ),
