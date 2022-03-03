@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import '../../screens/routing_helpers/tournament_details_page/tournament_details_arguments.dart';
-import '../../helper_classes/styles.dart';
-import '../../locator.dart';
-import '../../services/navigation_service.dart';
+import '../../../locator.dart';
+import '../../../routes/routes.dart';
+import '../../../routes/routing_helpers/tournament_details_page/tournament_details_arguments.dart';
+import '../../../services/navigation_service.dart';
+import '../../../styles/styles.dart';
 
 class TournamentCard extends StatelessWidget {
   final int tournamentId;
@@ -19,7 +20,7 @@ class TournamentCard extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         _navigationService.navigateTo(
-            '/tournament-details-arguments',
+            Routes.tournamentDetails,
             TournamentDetailsArguments(tournamentId)
         );
       },

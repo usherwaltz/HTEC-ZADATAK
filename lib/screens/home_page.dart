@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../helper_widgets/layout.dart';
-import '../helper_classes/page_appbars.dart';
-import '../helper_widgets/home_page/tournament_card.dart';
+import 'package:turnir/screens/widgets/layout.dart';
+import 'widgets/home_page/tournament_card.dart';
+import 'widgets/app_bar/page_appbars.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);

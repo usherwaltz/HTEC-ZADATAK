@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 //screens
 import 'screens/home_page.dart';
 import 'screens/draw_page.dart';
-import 'screens/routing_helpers/tournament_details_page/extract_arguments_tournament_details.dart';
+import 'routes/routing_helpers/tournament_details_page/extract_arguments_tournament_details.dart';
+import 'routes/routing_helpers/create_player_page/extract_arguments_create_player.dart';
 
 //navigation
+import 'routes/routes.dart';
 import 'services/navigation_service.dart';
 import 'locator.dart';
 
@@ -31,10 +33,10 @@ class MyApp extends StatelessWidget {
       navigatorKey: locator<NavigationService>().navigatorKey,
       initialRoute: '/',
       routes: {
-        '/' : (context) => const HomePage(),
-        '/draw-page' : (context) => const DrawPage(),
-        '/tournament-details-arguments' : (context) =>
-            const ExtractArgumentsTournamentDetails()
+        Routes.home              : (context) => const HomePage(),
+        Routes.brackets          : (context) => const DrawPage(),
+        Routes.tournamentDetails : (context) => const ExtractArgumentsTournamentDetails(),
+        Routes.createPlayer      : (context) => const ExtractArgumentsCreatePlayer()
       },
     );
   }

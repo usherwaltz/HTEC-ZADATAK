@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
-import 'appbar_default.dart';
+import 'app_bar/appbar_default.dart';
 
 class Layout extends StatelessWidget {
+  final Widget body;
+  final appBar;
+  final fab;
+
   const Layout({
     Key? key,
     required this.body,
-    this.appBar
+    this.appBar,
+    this.fab
   }) : super(key: key);
 
-  final Widget body;
-  final appBar;
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +24,7 @@ class Layout extends StatelessWidget {
       body: SafeArea(
         child: body
       ),
+      floatingActionButton: fab,
     );
   }
 }

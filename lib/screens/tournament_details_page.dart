@@ -2,9 +2,14 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:turnir/screens/widgets/layout.dart';
+import '../routes/routes.dart';
+import '../routes/routing_helpers/create_player_page/create_player_arguments.dart';
 import '../../models/players_model.dart';
-import '../../helper_widgets/layout.dart';
-import '../../helper_classes/page_appbars.dart';
+import '../screens/widgets/layout.dart';
+import 'widgets/app_bar/page_appbars.dart';
+import '../locator.dart';
+import '../services/navigation_service.dart';
 
 class TournamentDetailsPage extends StatefulWidget {
   final int tournamentId;
@@ -19,6 +24,7 @@ class TournamentDetailsPage extends StatefulWidget {
 }
 
 class _TournamentDetailsPageState extends State<TournamentDetailsPage> {
+  final NavigationService _navigationService =  locator<NavigationService>();
 
   late Future futurePlayers;
 
@@ -29,8 +35,8 @@ class _TournamentDetailsPageState extends State<TournamentDetailsPage> {
     if(response.statusCode == 200) {
       var decodedResponse = jsonDecode(response.body);
       var parsed = decodedResponse['data'];
-      List<Players> players = convertToPlayerModel(parsed);
 
+      List<Players> players = convertToPlayerModel(parsed);
       players.sort((b, a) => a.points.compareTo(b.points));
       return players;
     } else {
@@ -41,13 +47,6 @@ class _TournamentDetailsPageState extends State<TournamentDetailsPage> {
   convertToPlayerModel(List responseData) {
     return List<Players>.from(responseData.map((i) => Players.fromJson(i)));
   }
-
-  // sortPlayersByPoints(players) {
-  //   var newMap = Map.fromEntries(originalMap.entries.toList()..sort((e1, e2) =>
-  //       int.parse(e1.value["SortOrder"]).compareTo(int.parse(e2.value["SortOrder"]))));
-  //   players as List;
-  //   players.sort((a, b) => a.points.compareTo(b.points));
-  // }
 
   @override
   void initState() {
@@ -61,6 +60,16 @@ class _TournamentDetailsPageState extends State<TournamentDetailsPage> {
     var appbar = PageAppBars.tournamentDetailsPage;
     appbar.tournamentId = widget.tournamentId;
     return Layout(
+      fab: FloatingActionButton(
+        child: const Icon(Icons.add),
+        tooltip: 'Add a player to this tournament',
+        onPressed: () {
+          _navigationService.navigateTo(
+            Routes.createPlayer,
+            CreatePlayerArguments(widget.tournamentId)
+          );
+        },
+      ),
       appBar: appbar,
       body: FutureBuilder(
        future: futurePlayers,
