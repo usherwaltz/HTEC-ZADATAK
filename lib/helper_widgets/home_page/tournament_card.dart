@@ -16,7 +16,6 @@ class TournamentCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var cardHeight = MediaQuery.of(context).size.height * 0.2;
     return GestureDetector(
       onTap: () {
         _navigationService.navigateTo(
@@ -25,7 +24,7 @@ class TournamentCard extends StatelessWidget {
         );
       },
       child: SizedBox(
-        height: cardHeight,
+        height: 150,
         child: Card(
           elevation: 10,
           child: Center(
