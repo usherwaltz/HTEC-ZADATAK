@@ -9,6 +9,7 @@ class AppBarDefault extends StatelessWidget with PreferredSizeWidget {
   final List<Widget> actions;
   String title;
   final titleStyle;
+  final leading;
   var tourId;
 
   AppBarDefault(
@@ -17,6 +18,7 @@ class AppBarDefault extends StatelessWidget with PreferredSizeWidget {
         this.actions = const [],
         this.title = '',
         this.titleStyle,
+        this.leading,
         this.tourId
       }) : preferredSize = const Size.fromHeight(50.0),
         super(key: key);
@@ -36,6 +38,7 @@ class AppBarDefault extends StatelessWidget with PreferredSizeWidget {
       title: Text(
         title
       ),
+      leading: leading,
       centerTitle: centerTitle,
       actions: actions,
       automaticallyImplyLeading: true,
