@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../helper_classes/styles.dart';
 
 class AppBarDefault extends StatelessWidget with PreferredSizeWidget {
   @override

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../helper_widgets/appbar_default.dart';
-import '../helper_widgets/layout.dart';
+import '../screens/widgets/app_bar/appbar_default.dart';
+import '../screens/widgets/layout.dart';
 
 class DrawPage extends StatelessWidget {
   const DrawPage({Key? key}) : super(key: key);

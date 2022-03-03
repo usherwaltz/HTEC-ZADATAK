@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'tournament_details_arguments.dart';
-import '../../tournament_details_page.dart';
+import '../../../screens/tournament_details_page.dart';
 
 class ExtractArgumentsTournamentDetails extends StatelessWidget {
   const ExtractArgumentsTournamentDetails({Key? key}) : super(key: key);
