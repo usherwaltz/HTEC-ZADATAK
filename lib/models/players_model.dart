@@ -1,5 +1,5 @@
 class Players {
-  final int id;
+  final id;
   final String firstName;
   final String lastName;
   final int points;
@@ -10,7 +10,7 @@ class Players {
   final tournamentId;
 
   const Players({
-      required this.id,
+      this.id,
       required this.firstName,
       required this.lastName,
       required this.points,

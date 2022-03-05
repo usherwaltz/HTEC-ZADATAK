@@ -10,6 +10,10 @@ class AppBarDefault extends StatelessWidget with PreferredSizeWidget {
   final titleStyle;
   final leading;
   var tourId;
+  int screen = 0;
+
+  static const int tournamentDetails = 1;
+  static const int createPlayer = 2;
 
   AppBarDefault(
       { Key? key,
@@ -22,15 +26,17 @@ class AppBarDefault extends StatelessWidget with PreferredSizeWidget {
       }) : preferredSize = const Size.fromHeight(50.0),
         super(key: key);
 
-  set tournamentId(int tournamentId) {
+  set tournamentDetailsId(int tournamentId) {
     tourId = tournamentId;
+    screen = tournamentDetails;
   }
 
   @override
   Widget build(BuildContext context) {
 
-    if(tourId != null) {
-      title = "Tournament ID: $tourId";
+    switch(screen) {
+      case tournamentDetails:
+        title = "Tournament ID: $tourId";
     }
 
     return AppBar(

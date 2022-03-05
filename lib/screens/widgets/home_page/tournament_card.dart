@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
-import '../../../locator.dart';
-import '../../../routes/routes.dart';
-import '../../../routes/routing_helpers/tournament_details_page/tournament_details_arguments.dart';
-import '../../../services/navigation_service.dart';
+import '../../../screens/tournament_details_page.dart';
 import '../../../styles/styles.dart';
 
 class TournamentCard extends StatelessWidget {
   final int tournamentId;
-  final NavigationService _navigationService =  locator<NavigationService>();
 
 
-  TournamentCard({
+  const TournamentCard({
     Key? key,
     required this.tournamentId
   }) : super(key: key);
@@ -19,9 +15,8 @@ class TournamentCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        _navigationService.navigateTo(
-            Routes.tournamentDetails,
-            TournamentDetailsArguments(tournamentId)
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (context) => TournamentDetailsPage(tournamentId: tournamentId))
         );
       },
       child: SizedBox(
