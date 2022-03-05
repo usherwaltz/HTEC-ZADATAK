@@ -1,18 +1,10 @@
 import 'package:flutter/material.dart';
-
-//screens
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:turnir/screens/blocs/tournament_details/tournament_details_bloc.dart';
+import 'package:turnir/screens/blocs/tournament_details/tournament_details_repository.dart';
 import 'screens/home_page.dart';
-import 'screens/draw_page.dart';
-import 'routes/routing_helpers/tournament_details_page/extract_arguments_tournament_details.dart';
-import 'routes/routing_helpers/create_player_page/extract_arguments_create_player.dart';
-
-//navigation
-import 'routes/routes.dart';
-import 'services/navigation_service.dart';
-import 'locator.dart';
 
 void main() {
-  setupLocator();
   runApp(MyApp());
 }
 
@@ -26,18 +18,26 @@ class MyApp extends StatelessWidget {
 
     /** Using MaterialApp() for this assignment. We could also use
      * CupertinoApp() */
-    return MaterialApp(
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      navigatorKey: locator<NavigationService>().navigatorKey,
-      initialRoute: '/',
-      routes: {
-        Routes.home              : (context) => const HomePage(),
-        Routes.brackets          : (context) => const DrawPage(),
-        Routes.tournamentDetails : (context) => const ExtractArgumentsTournamentDetails(),
-        Routes.createPlayer      : (context) => const ExtractArgumentsCreatePlayer()
-      },
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider(create: (context) => TournamentDetailsRepository())
+      ],
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => TournamentDetailsBloc(
+              RepositoryProvider.of(context)
+            )
+          )
+        ],
+        child: MaterialApp(
+            theme: ThemeData(
+                primarySwatch: Colors.blue,
+                inputDecorationTheme: const InputDecorationTheme(border: OutlineInputBorder())
+            ),
+            home: const HomePage()
+        ),
+      )
     );
   }
 }
