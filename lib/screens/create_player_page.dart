@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:turnir/models/players_model.dart';
+import 'package:intl/intl.dart';
+import 'package:turnir/models/player.dart';
+
 import 'package:turnir/screens/blocs/tournament_details/tournament_details_bloc.dart';
 import '../screens/widgets/app_bar/page_appbars.dart';
 import '../screens/widgets/layout.dart';
@@ -26,6 +28,21 @@ class _CreatePlayerPageState extends State<CreatePlayerPage> {
   final TextEditingController _controllerProfileImageUrl = TextEditingController();
   bool _checked = true;
   int _points = 0;
+  DateTime selectedDate = DateTime.now();
+
+  Future<void> selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(1930),
+        lastDate: DateTime.now());
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+        _controllerBirthday.text = DateFormat("yMMMMd").format(picked);
+      });
+    }
+  }
 
   @override
   void dispose() {
@@ -43,10 +60,12 @@ class _CreatePlayerPageState extends State<CreatePlayerPage> {
       appBar: PageAppBars.createPlayer,
       fab: FloatingActionButton.extended(
         onPressed: () {
-          var players = Players(
+          var players = Player(
               firstName: _controllerFirstName.value.text,
               lastName: _controllerLastName.value.text,
+              description: _controllerDescription.value.text,
               points: _points,
+              dateOfBirth: DateFormat("y-MM-dd HH:mm:ss").format(selectedDate),
               isProfessional: _checked ? 1 : 0,
               createdAt: "${DateTime.now()}",
               updatedAt: "",
@@ -57,12 +76,33 @@ class _CreatePlayerPageState extends State<CreatePlayerPage> {
           context.read<TournamentDetailsBloc>().add(
               AddTournamentDetails(players)
           );
+
+
         },
         icon: const Icon(Icons.send),
         label: const Text('SUBMIT'),
       ),
       body: BlocListener<TournamentDetailsBloc, TournamentDetailsState>(
-        listener: (context, state) {},
+        listener: (context, state) {
+          if(state is TournamentDetailsLoaded) {
+            if(state.snackBarMessage != null) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(state.snackBarMessage.toString())
+                  )
+              );
+              Navigator.of(context).pop();
+            }
+          }
+
+          if(state is TournamentDetailsError) {
+            ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                    content: Text("Oops, something went wrong")
+                )
+            );
+          }
+        },
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(20),
@@ -115,9 +155,14 @@ class _CreatePlayerPageState extends State<CreatePlayerPage> {
                 /// Birthday
                 TextFormField(
                   controller: _controllerBirthday,
-                  decoration: const InputDecoration(
+                  enableInteractiveSelection: false,
+                  focusNode: AlwaysDisabledFocusNode(),
+                  decoration: InputDecoration(
                       labelText: "Birthday",
-                      hintText: "yyyy-mm-dd H:i:s"
+                      icon: InkWell(
+                        onTap: () => selectDate(context),
+                        child: const Icon(Icons.calendar_today),
+                      )
                   ),
                 ),
 
@@ -151,4 +196,9 @@ class _CreatePlayerPageState extends State<CreatePlayerPage> {
       ),
     );
   }
+}
+
+class AlwaysDisabledFocusNode extends FocusNode {
+  @override
+  bool get hasFocus => false;
 }

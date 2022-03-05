@@ -14,7 +14,7 @@ class LoadTournamentDetails extends TournamentDetailsEvent {
 }
 
 class AddTournamentDetails extends TournamentDetailsEvent {
-  final Players player;
+  final Player player;
 
   const AddTournamentDetails(this.player);
 

@@ -15,10 +15,11 @@ class TournamentDetailsLoading extends TournamentDetailsState {
 
 /// Loaded
 class TournamentDetailsLoaded extends TournamentDetailsState {
-  final List<Players> players;
+  final List<Player> players;
+  final String? snackBarMessage;
 
 
-  const TournamentDetailsLoaded({required this.players});
+  const TournamentDetailsLoaded({required this.players, this.snackBarMessage});
 
   @override
   List<Object> get props => [players];

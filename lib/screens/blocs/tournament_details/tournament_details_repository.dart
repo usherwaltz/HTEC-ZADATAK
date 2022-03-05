@@ -1,20 +1,18 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-import '../../../models/players_model.dart';
+import '../../../models/player.dart';
 
 class TournamentDetailsRepository {
   final String _baseUrl = 'http://internships-mobile.htec.co.rs/api/players';
 
-  static const emptyList = [];
-
-  Future<List<Players>> fetchPlayersList(int tournamentId) async {
+  Future<List<Player>> fetchPlayersList(int tournamentId) async {
     final response = await http.get(Uri.parse(_baseUrl), headers: {"x-tournament-id":"$tournamentId"});
 
     if(response.statusCode == 200) {
       var parsed = jsonDecode(response.body)['data'];
 
-      List<Players> players = convertToPlayerModel(parsed);
+      List<Player> players = convertToPlayerModel(parsed);
       players.sort((b, a) => a.points.compareTo(b.points));
       return players;
     } else {
@@ -22,7 +20,24 @@ class TournamentDetailsRepository {
     }
   }
 
+  Future<bool> createPlayer(Player player) async {
+    final response = await http.post(
+      Uri.parse(_baseUrl),
+      headers: {
+        'accept': 'application/json',
+        'x-tournament-id': "10001",
+        'content-type': 'application/json'
+      },
+      body: jsonEncode(player),
+    );
+
+    // return the success value, maybe better to check the status code since
+    // we never know if there will be a server side failure, I left it like this
+    // for now
+    return jsonDecode(response.body)['success'];
+  }
+
   convertToPlayerModel(List responseData) {
-    return List<Players>.from(responseData.map((i) => Players.fromJson(i)));
+    return List<Player>.from(responseData.map((i) => Player.fromJson(i)));
   }
 }

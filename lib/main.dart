@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:turnir/screens/blocs/tournament_details/tournament_details_bloc.dart';
 import 'package:turnir/screens/blocs/tournament_details/tournament_details_repository.dart';
 import 'screens/home_page.dart';
 
@@ -21,12 +22,21 @@ class MyApp extends StatelessWidget {
       providers: [
         RepositoryProvider(create: (context) => TournamentDetailsRepository())
       ],
-      child: MaterialApp(
-        theme: ThemeData(
-            primarySwatch: Colors.blue,
-            inputDecorationTheme: const InputDecorationTheme(border: OutlineInputBorder())
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => TournamentDetailsBloc(
+              RepositoryProvider.of(context)
+            )
+          )
+        ],
+        child: MaterialApp(
+            theme: ThemeData(
+                primarySwatch: Colors.blue,
+                inputDecorationTheme: const InputDecorationTheme(border: OutlineInputBorder())
+            ),
+            home: const HomePage()
         ),
-        home: const HomePage()
       )
     );
   }
