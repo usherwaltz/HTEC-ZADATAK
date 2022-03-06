@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:turnir/screens/blocs/tournament_details/tournament_details_bloc.dart';
-import 'package:turnir/screens/blocs/tournament_details/tournament_details_repository.dart';
+import 'screens/blocs/players/players_bloc.dart';
+import 'screens/blocs/players/players_repository.dart';
 import 'screens/home_page.dart';
 
 void main() {
@@ -20,15 +20,15 @@ class MyApp extends StatelessWidget {
      * CupertinoApp() */
     return MultiRepositoryProvider(
       providers: [
-        RepositoryProvider(create: (context) => TournamentDetailsRepository())
+        RepositoryProvider(create: (context) => PlayersRepository()),
       ],
       child: MultiBlocProvider(
         providers: [
           BlocProvider(
-            create: (context) => TournamentDetailsBloc(
+            create: (context) => PlayersBloc(
               RepositoryProvider.of(context)
             )
-          )
+          ),
         ],
         child: MaterialApp(
             theme: ThemeData(
