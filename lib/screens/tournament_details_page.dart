@@ -2,7 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'widgets/tournament_details_page/player_card.dart';
 import 'blocs/players/players_bloc.dart';
-import '../screens/draw_page.dart';
+import '../screens/brackets_page.dart';
 import '../screens/widgets/app_bar/appbar_default.dart';
 import '../screens/widgets/layout.dart';
 import '../../models/player.dart';
@@ -45,7 +45,9 @@ class _TournamentDetailsPageState extends State<TournamentDetailsPage> {
           IconButton(
               onPressed: () {
                 Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => const DrawPage())
+                    MaterialPageRoute(
+                      builder: (context) => BracketsPage(tournamentId: widget.tournamentId)
+                    )
                 );
               },
               icon: const Icon(
