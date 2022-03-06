@@ -6,7 +6,7 @@ import 'screens/blocs/players/players_repository.dart';
 import 'screens/home_page.dart';
 
 void main() async {
-  await Future.delayed(const Duration(seconds: 3));
+  await Future.delayed(const Duration(seconds: 1));
   runApp(MyApp());
 }
 
