@@ -41,7 +41,7 @@ class PlayersBloc extends Bloc<PlayersEvent, PlayersState> {
         players.sort((b, a) => a.points.compareTo(b.points));
         emit(PlayersLoaded(
           players: players,
-          snackBarMessage: "Successfully created players ${playerCreated.firstName} ${playerCreated.lastName}"
+          snackBarMessage: "Successfully created player ${playerCreated.firstName} ${playerCreated.lastName}."
         ));
       }
     } catch (e) {
@@ -64,7 +64,7 @@ class PlayersBloc extends Bloc<PlayersEvent, PlayersState> {
 
         emit(PlayersLoaded(
           players: players,
-          snackBarMessage: "Successfully updated players ${updatedPlayer.firstName} ${updatedPlayer.lastName}",
+          snackBarMessage: "Successfully updated player ${updatedPlayer.firstName} ${updatedPlayer.lastName}.",
           player: updatedPlayer
         ));
       }
@@ -87,7 +87,7 @@ class PlayersBloc extends Bloc<PlayersEvent, PlayersState> {
       emit(PlayersLoaded(
         players: players,
         delete: true,
-        snackBarMessage: "Successfully deleted players"
+        snackBarMessage: "Successfully deleted player."
       ));
     }
   }

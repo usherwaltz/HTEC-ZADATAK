@@ -126,6 +126,14 @@ class PlayerDetailsPageState extends State<PlayerDetailsPage> {
                         )
                       ),
                       Card(
+                          elevation: 5,
+                          child:ListTile(
+                            contentPadding: const EdgeInsets.only(left: 20, right: 20),
+                            title: const Text("Description"),
+                            subtitle: Text(singlePlayer.description),
+                          )
+                      ),
+                      Card(
                         elevation: 5,
                         child:ListTile(
                           contentPadding: const EdgeInsets.only(left: 20, right: 20),
