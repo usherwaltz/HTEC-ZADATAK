@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
-import '../screens/blocs/tournament_details/tournament_details_bloc.dart';
+import 'widgets/tournament_details_page/player_card.dart';
+import 'blocs/players/players_bloc.dart';
 import '../screens/draw_page.dart';
 import '../screens/widgets/app_bar/appbar_default.dart';
 import '../screens/widgets/layout.dart';
@@ -22,124 +23,82 @@ class TournamentDetailsPage extends StatefulWidget {
 class _TournamentDetailsPageState extends State<TournamentDetailsPage> {
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
 
-    final TournamentDetailsBloc _tournamentDetailsBloc =
-      BlocProvider.of<TournamentDetailsBloc>(context)
-      ..add(LoadTournamentDetails(widget.tournamentId));
+    final PlayersBloc _playersBloc =
+      BlocProvider.of<PlayersBloc>(context)
+      ..add(LoadPlayers(widget.tournamentId));
 
-    return BlocBuilder(
-        bloc: _tournamentDetailsBloc,
-        builder: (context, dynamic) {
-          return Layout(
-            fab: FloatingActionButton(
-              child: const Icon(Icons.add),
-              tooltip: 'Add a player to this tournament',
+    return Layout(
+      fab: FloatingActionButton(
+        child: const Icon(Icons.add),
+        tooltip: 'Add a players to this tournament',
+        onPressed: () {
+          Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => CreatePlayerPage(tournamentId: widget.tournamentId))
+          );
+        },
+      ),
+      appBar: AppBarDefault(
+        title: "Tournament ID: ${widget.tournamentId}",
+        actions: [
+          IconButton(
               onPressed: () {
                 Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => CreatePlayerPage(tournamentId: widget.tournamentId))
+                    MaterialPageRoute(builder: (context) => const DrawPage())
                 );
               },
-            ),
-            appBar: AppBarDefault(
-              title: "Tournament ID: ${widget.tournamentId}",
-              actions: [
-                IconButton(
-                    onPressed: () {
-                      Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => const DrawPage())
-                      );
-                    },
-                    icon: const Icon(
-                      Icons.account_tree,
-                      color: Colors.white,
-                    )
-                ),
-              ],
-            ),
-            body:BlocBuilder<TournamentDetailsBloc, TournamentDetailsState>(
-                builder: (context, state) {
-                  if (state is TournamentDetailsLoading) {
-                    return const Center(
-                        child: CircularProgressIndicator()
-                    );
-                  }
+              icon: const Icon(
+                Icons.account_tree,
+                color: Colors.white,
+              )
+          ),
+        ],
+      ),
+      body:BlocBuilder<PlayersBloc, PlayersState>(
+          bloc: _playersBloc,
+          builder: (context, state) {
+            if (state is PlayersLoading) {
+              return const Center(
+                  child: CircularProgressIndicator()
+              );
+            }
 
-                  if(state is TournamentDetailsLoaded) {
+            if(state is PlayersLoaded) {
 
-                    return Column(
-                      children: [
-                        const SizedBox(
-                          height: 50,
-                          child: Center(
-                            child: Text(
-                              "Players List",
-                              style: TextStyle(
-                                fontSize: 20
-                              ),
-                            ),
-                          ),
+              return Column(
+                children: [
+                  const SizedBox(
+                    height: 50,
+                    child: Center(
+                      child: Text(
+                        "Players List",
+                        style: TextStyle(
+                            fontSize: 20
                         ),
-                        Expanded(
-                          child: ListView.separated(
-                          separatorBuilder: (context, index) {
-                            return const Divider(height: 10);
-                          },
-                          padding: const EdgeInsets.all(20.0),
-                          itemCount: state.players.length,
-                          itemBuilder: (context, index) {
-                            Player player = state.players[index];
-                            return GestureDetector(
-                              onTap: () {},
-                              child: SizedBox(
-                                height: 150,
-                                child: Card(
-                                  elevation: 10,
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(left: 20, right: 20),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Text(
-                                          "${player.firstName} ${player.lastName}",
-                                          style: const TextStyle(
-                                              fontSize: 20
-                                          ),
-                                        ),
-                                        Text(
-                                            'Points: ${player.points}'
-                                        ),
-                                        Text(
-                                            player.isProfessional == 1 ?
-                                            "Professional: Yes" :
-                                            "Professional: No"
-                                        ),
-                                        if(player.tournamentId != null)
-                                          Text("Tournament ID: ${player.tournamentId}")
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
-                        )
-                        )
-                      ],
-                    );
-                  }
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                      child: ListView.separated(
+                        separatorBuilder: (context, index) {
+                          return const Divider(height: 10);
+                        },
+                        padding: const EdgeInsets.all(20.0),
+                        itemCount: state.players.length,
+                        itemBuilder: (context, index) {
+                          Player player = state.players[index];
+                          return PlayerCard(player: player);
+                        },
+                      )
+                  )
+                ],
+              );
+            }
 
-                  return const Text("Something Went Wrong");
-                }
-            ),
-          );
-        }
+            return const Text("Something Went Wrong");
+          }
+      ),
     );
   }
 }

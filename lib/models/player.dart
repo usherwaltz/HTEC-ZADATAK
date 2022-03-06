@@ -5,19 +5,21 @@ class Player {
   final String description;
   final int points;
   final String dateOfBirth;
+  final String profileImageUrl;
   final int isProfessional;
   final String createdAt;
   final String updatedAt;
   final String deletedAt;
   final tournamentId;
 
-  const Player({
+  Player({
     this.id,
     required this.firstName,
     required this.lastName,
     required this.description,
     required this.points,
     required this.dateOfBirth,
+    required this.profileImageUrl,
     required this.isProfessional,
     required this.createdAt,
     required this.updatedAt,
@@ -33,11 +35,12 @@ class Player {
       description: json['description'] ?? '',
       points: json['points'] ?? 0,
       dateOfBirth: json['dateOfBirth'] ?? '',
+      profileImageUrl: json['profileImageUrl'] ?? '',
       isProfessional: json['isProfessional'] ?? 0,
       createdAt: json['created_at'] ?? '',
       updatedAt: json['updated_at'] ?? '',
       deletedAt: json['deleted_at'] ?? '',
-      tournamentId: json['tournament_id']
+      tournamentId: json['tournament_id'].runtimeType == String ? int.parse(json['tournament_id']) : json['tournament_id']
     );
   }
 
@@ -49,6 +52,7 @@ class Player {
     data['description'] = description;
     data['points'] = points;
     data['dateOfBirth'] = dateOfBirth;
+    data['profileImageUrl'] = profileImageUrl;
     data['isProfessional'] = isProfessional;
     data['created_at'] = createdAt;
     data['updated_at'] = updatedAt;

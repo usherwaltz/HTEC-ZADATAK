@@ -1,33 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'widgets/app_bar/page_appbars.dart';
 import 'widgets/create_player_page/form.dart';
-import '../models/player.dart';
 import 'widgets/layout.dart';
-import 'package:intl/intl.dart';
+
+import '../models/player.dart';
 import 'blocs/players/players_bloc.dart';
 
-class CreatePlayerPage extends StatefulWidget {
-  final int tournamentId;
-
-  const CreatePlayerPage({
-    Key? key,
-    required this.tournamentId,
-  }) : super(key: key);
+class UpdatePlayerPage extends StatefulWidget {
+  final Player player;
+  const UpdatePlayerPage(
+      this.player,
+    {Key? key}) : super(key: key);
 
   @override
-  State<CreatePlayerPage> createState() => _CreatePlayerPageState();
+  State<UpdatePlayerPage> createState() => _UpdatePlayerPageState();
 }
 
-class _CreatePlayerPageState extends State<CreatePlayerPage> {
+class _UpdatePlayerPageState extends State<UpdatePlayerPage> {
   final TextEditingController _controllerFirstName = TextEditingController();
   final TextEditingController _controllerLastName = TextEditingController();
   final TextEditingController _controllerDescription = TextEditingController();
   final TextEditingController _controllerBirthday = TextEditingController();
-  final TextEditingController _controllerProfileImageUrl = TextEditingController();
   bool _checked = true;
   int _points = 0;
   DateTime selectedDate = DateTime.now();
+
+  setValues() {
+    _controllerFirstName.text = widget.player.firstName;
+    _controllerLastName.text = widget.player.lastName;
+    _controllerDescription.text = widget.player.description;
+    _controllerBirthday.text = DateFormat(DateFormat.YEAR_MONTH_DAY).format(DateTime.parse(widget.player.dateOfBirth));
+    _checked = widget.player.isProfessional == 1 ? true : false;
+    _points = widget.player.points;
+  }
 
   setPoints(newValue) {
     setState(() {
@@ -56,22 +63,28 @@ class _CreatePlayerPageState extends State<CreatePlayerPage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    setValues();
+  }
+
+  @override
   void dispose() {
     super.dispose();
     _controllerFirstName.dispose();
     _controllerLastName.dispose();
     _controllerDescription.dispose();
     _controllerBirthday.dispose();
-    _controllerProfileImageUrl.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Layout(
-      appBar: PageAppBars.createPlayer,
+      appBar: PageAppBars.updatePlayer,
       fab: FloatingActionButton.extended(
         onPressed: () {
-          var player = Player(
+          Player player = Player(
+              id: widget.player.id,
               firstName: _controllerFirstName.value.text,
               lastName: _controllerLastName.value.text,
               description: _controllerDescription.value.text,
@@ -82,54 +95,44 @@ class _CreatePlayerPageState extends State<CreatePlayerPage> {
               createdAt: "${DateTime.now()}",
               updatedAt: "",
               deletedAt: "",
-              tournamentId: widget.tournamentId
+              tournamentId: widget.player.tournamentId,
           );
 
           context.read<PlayersBloc>().add(
-              CreatePlayer(player)
+              UpdatePlayer(player)
           );
         },
-        icon: const Icon(Icons.send),
-        label: const Text('SUBMIT'),
+        icon: const Icon(Icons.save),
+        label: const Text("SAVE"),
       ),
       body: BlocListener<PlayersBloc, PlayersState>(
         listener: (context, state) {
           if(state is PlayersLoaded) {
-            if(state.snackBarMessage != null) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(state.snackBarMessage.toString())
-                  )
-              );
-              Navigator.of(context).pop();
-            }
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(state.snackBarMessage.toString()))
+            );
+            Navigator.of(context).pop();
           }
 
           if(state is PlayersError) {
             ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                    content: Text("Oops, something went wrong")
-                )
+                SnackBar(content: Text(state.error))
             );
           }
         },
         child: PlayerForm(
-          tournamentId: widget.tournamentId,
-          controllerBirthday: _controllerBirthday,
-          controllerDescription: _controllerDescription,
-          controllerFirstName: _controllerFirstName,
-          controllerLastName: _controllerLastName,
-          selectDate: selectDate,
-          setPoints: setPoints,
-          setChecked: setChecked,
-          checked: _checked,
-        )
+        setChecked: setChecked,
+        setPoints: setPoints,
+        selectDate: selectDate,
+        controllerFirstName: _controllerFirstName,
+        controllerLastName: _controllerLastName,
+        controllerDescription: _controllerDescription,
+        controllerBirthday: _controllerBirthday,
+        checked: _checked,
+        tournamentId: widget.player.tournamentId,
+        points: widget.player.points,
       ),
+      )
     );
   }
-}
-
-class AlwaysDisabledFocusNode extends FocusNode {
-  @override
-  bool get hasFocus => false;
 }

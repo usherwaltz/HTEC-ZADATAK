@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:turnir/screens/widgets/layout.dart';
+import 'widgets/layout.dart';
 import 'widgets/home_page/tournament_card.dart';
 import 'widgets/app_bar/page_appbars.dart';
 

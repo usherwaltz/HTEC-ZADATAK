@@ -15,4 +15,8 @@ class PageAppBars {
   static final createPlayer = AppBarDefault(
     title: 'Create Player',
   );
+
+  static final updatePlayer = AppBarDefault(
+    title: 'Update Player',
+  );
 }
