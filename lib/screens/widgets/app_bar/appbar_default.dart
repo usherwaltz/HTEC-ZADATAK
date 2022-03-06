@@ -10,6 +10,8 @@ class AppBarDefault extends StatelessWidget with PreferredSizeWidget {
   final titleStyle;
   final leading;
   var tourId;
+  TabBar? bottom;
+  double? height;
 
   AppBarDefault(
       { Key? key,
@@ -18,8 +20,10 @@ class AppBarDefault extends StatelessWidget with PreferredSizeWidget {
         this.title = '',
         this.titleStyle,
         this.leading,
-        this.tourId
-      }) : preferredSize = const Size.fromHeight(50.0),
+        this.tourId,
+        this.bottom,
+        this.height
+      }) : preferredSize = Size.fromHeight(height ?? 50),
         super(key: key);
 
   @override
@@ -33,6 +37,7 @@ class AppBarDefault extends StatelessWidget with PreferredSizeWidget {
       centerTitle: centerTitle,
       actions: actions,
       automaticallyImplyLeading: true,
+      bottom: bottom,
     );
   }
 }
