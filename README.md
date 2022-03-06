@@ -1,4 +1,4 @@
-# turnir
+# Tournament
 
 Htec group - zadatak
 
